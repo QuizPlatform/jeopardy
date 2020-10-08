@@ -10,6 +10,7 @@ class Quiz extends PureComponent {
 
     this.state = {
       round: '',
+      currentAnswer: '',
       roundLoading: true,
       err: null
     }
@@ -17,6 +18,7 @@ class Quiz extends PureComponent {
     this.firebaseListener = '';
 
     // TOOD add realtime later
+    this.answerListener = '';
   }
 
   componentDidMount() {
@@ -26,12 +28,21 @@ class Quiz extends PureComponent {
         (snap) => {
 
           // console.log('Prediction data', predictionData);
-          const round = snap.data()['round'];
+          // JUST FOR TESTING
+          try {
+            const round = snap.data()['round'];
 
-          this.setState({
-            round: round,
-            roundLoading: false
-          });
+            this.setState({
+              round: round,
+              roundLoading: false
+            });
+
+          } catch (err) {
+            this.setState({
+              err: 'No Healthy Internet Connection, Try to Reload the Page',
+              roundLoading: false
+            });
+          }
         },
         (err) => {
           this.setState({
@@ -39,6 +50,28 @@ class Quiz extends PureComponent {
             roundLoading: false
           });
         },
+      );
+
+    this.answerListener = firebase.firestore().collection('registered')
+      .doc(this.props.secretId)
+      .onSnapshot(
+        (snap) => {
+          console.log(snap.id);
+          console.log(snap.data());
+
+          const round = this.state.round;
+          const toUpdate = snap.data()['answers'][round]
+
+          // Updating with the latest answer
+          this.setState({
+            currentAnswer: toUpdate
+          });
+        },
+        (err) => {
+          this.setState({
+            err: 'Soemthing Went Wrong',
+          });
+        }
       );
   }
 
@@ -50,16 +83,30 @@ class Quiz extends PureComponent {
     }
   }
 
+  handleAnswerChange = (val) => {
+    // console.log(val.target.value);
+    this.setState({
+      currentAnswer: val.target.value
+    });
+  }
+
   handleAnswerSubmit = (event) => {
     event.preventDefault();
 
-    // Update the answer here
-    // firebase.firestore()
-    //   .collection('registered')
-    //   .doc(this.props.secretId)
-    //   .update({
-    //     answers: 'Hello' 
-    //   });
+    const currentAnswer = this.state.currentAnswer;
+    const round = this.state.round;
+    const toUpdateDict = {};
+    toUpdateDict[round] = currentAnswer;
+
+    console.log("Answer event called", round, currentAnswer);
+
+    // Update the answer here, the value will come back from the snapshot listener
+    firebase.firestore()
+      .collection('registered')
+      .doc(this.props.secretId)
+      .set({
+        answers: toUpdateDict
+      }, { merge: true });
   }
 
   render() {
@@ -75,8 +122,11 @@ class Quiz extends PureComponent {
     } else {
 
       const round = this.state.round;
-      if (round === 'waiting') {
-        return 'Quiz is Yet to start';
+      // Waiting for next round
+      if (round === '0') {
+        return (
+          <h2>Next Round is Going to be Started soon!</h2>
+        );
       }
       else {
         // The questions are running
@@ -89,6 +139,8 @@ class Quiz extends PureComponent {
                 <textarea
                   id="answer-text-area"
                   className="form-control"
+                  onChange={this.handleAnswerChange}
+                  value={this.state.currentAnswer}
                   placeholder="Enter Your Answer Here">
                 </textarea>
               </div>
