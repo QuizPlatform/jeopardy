@@ -11,11 +11,15 @@
 </head>
 
 <body>
-  <div id="change-status-div" class="col">
-    <h3>Enter Question No</h3>
-    <label for="questionNo">Enter Question No:</label>
-    <input type="number" id="questionNo" name="questionNo"> 
-    <button type="button" id="round-submit" class="btn btn-info btn-sm" onclick="changeValue()">Change Round</button>
+  <div id="change-status-div" style="margin-top:10px" class="col">
+    <h3>Change Round</h3>
+    <label for="questionNo">Enter Question No:</label><br>
+    <input type="number" id="questionNo" name="questionNo"><br>
+    <button type="button" id="round-submit" class="btn btn-info btn-sm" onclick="changeValue()"
+      style="margin-top:10px">Change Round</button>
+  </div>
+  <div id="current-round" style="padding:20px">
+
   </div>
 
 
@@ -46,18 +50,33 @@
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
 
-  
-    <script>
-      async function changeValue() {
-        // Firebase db initialisation
-        var db = firebase.firestore();
-        console.log('DB initialised');
-  
-        var questionNo = document.getElementById("questionNo").value
-        console.log(questionNo);
-        db.collection("admin").doc("adminControls069").update({ "round": questionNo })
+
+  <script>
+    async function changeValue() {
+      // Firebase db initialisation
+      var db = firebase.firestore();
+      console.log('DB initialised');
+
+      var questionNo = document.getElementById("questionNo").value
+      console.log(questionNo);
+      db.collection("admin").doc("adminControls069").update({ "round": questionNo })
+    }
+
+    var db = firebase.firestore();
+    var roundDoc = db.collection("admin").doc("adminControls069");
+    roundDoc.onSnapshot(function (doc) {
+      document.getElementById("current-round").innerHTML = "Current Round is : " + doc.data()["round"];
+      //console.log(doc.data()["round"]);
+    });
+
+    var input = document.getElementById("questionNo");
+    input.addEventListener("keyup", function (event) {
+      if (event.keyCode === 13) {
+        event.preventDefault();
+        document.getElementById("round-submit").click();
       }
-    </script>
+    });
+  </script>
 
 </body>
 
