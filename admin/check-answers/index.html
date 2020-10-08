@@ -1,0 +1,275 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link href="/assets/checkAnswers.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>Admin | Check Answers</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css"
+        integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX" crossorigin="anonymous">
+</head>
+
+<body>
+    <!-- <div id="navbar" class="container-fluid">
+        <div class="row">
+            <a href="/" class="col center">Home</a>
+            <a href="/addquestionspage" class="col center">Add Questions</a>
+            <a href="/scorecard" class="col center">Scorecard</a>
+            <a href="/registrationpage" class="col center">Register</a>
+        </div>
+    </div> -->
+
+    <div class="container">
+        <div class="tabs">
+            <div class="tab">
+                <input type="checkbox" id="chck1">
+                <label class="tab-label" for="chck1">Question 1</label>
+                <div class="row tab-content">
+                    <div class="col-10">
+                        <h6>Users Answer:</h6>
+                        <div id="a1" class="usersAnswer">
+                            Babu
+                        </div>
+                        <h6>Correct Answer:</h6>
+                        <div id="c1" class="correctAnswer">
+                            Pranshu
+                        </div>
+                        <h6>Total Marks:</h6>
+                        <div id="m1" class="points">
+                            0
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <form class="form">
+                            <div class="">
+                                <input style="width:100%" type="text" id="points" class="pointsInput">
+                                <input type="submit" class="btn-primary pointsInput" style="margin-top: 2px;">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="tab">
+                <input type="checkbox" id="chck2">
+                <label class="tab-label" for="chck2">Question 2</label>
+                <div class="row tab-content">
+                    <div class="col-10">
+                        <h6>Users Answer:</h6>
+                        <div id="a2" class="usersAnswer">
+                            Babu
+                        </div>
+                        <h6>Correct Answer:</h6>
+                        <div id="c2" class="correctAnswer">
+                            Pranshu
+                        </div>
+                        <h6>Total Marks:</h6>
+                        <div id="m2" class="points">
+                            0
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <form class="form">
+                            <div class="">
+                                <input style="width:100%" type="text" id="points" class="pointsInput">
+                                <input type="submit" class="btn-primary pointsInput" style="margin-top: 2px;">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="tab">
+                <input type="checkbox" id="chck3">
+                <label class="tab-label" for="chck3">Question 3</label>
+                <div class="row tab-content">
+                    <div class="col-10">
+                        <h6>Users Answer:</h6>
+                        <div id="a3" class="usersAnswer">
+                            Babu
+                        </div>
+                        <h6>Correct Answer:</h6>
+                        <div id="c3" class="correctAnswer">
+                            Pranshu
+                        </div>
+                        <h6>Total Marks:</h6>
+                        <div id="m3" class="points">
+                            0
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <form class="form">
+                            <div class="">
+                                <input style="width:100%" type="text" id="points" class="pointsInput">
+                                <input type="submit" class="btn-primary pointsInput" style="margin-top: 2px;">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div id="checkingTeam"></div>
+                <button id="checkedTeamsBtn" type="button" style="margin: 10px auto" class="btn btn-primary">Answers
+                    Checked!</button>
+                <script>
+                    document.getElementById("checkedTeamsBtn").onclick = function () {
+                        document.getElementsByClassName("teamTabs")[window.currentTeam - 1].classList.remove("btn-warning")
+                        document.getElementsByClassName("teamTabs")[window.currentTeam - 1].classList.add("btn-success")
+                        console.log("all answers checked!")
+                    }
+                </script>
+            </div>
+
+            <div id="teamSelection" class="row">
+            </div>
+        </div>
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-firestore.js"></script>
+
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+        <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-analytics.js"></script>
+
+        <script>
+            // Your web app's Firebase configuration
+            // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+            var firebaseConfig = {
+                apiKey: "AIzaSyB1mz728tc9dqKGLUiPOAwxBxg20Gx4mSE",
+                authDomain: "quizpriyam.firebaseapp.com",
+                databaseURL: "https://quizpriyam.firebaseio.com",
+                projectId: "quizpriyam",
+                storageBucket: "quizpriyam.appspot.com",
+                messagingSenderId: "968131692426",
+                appId: "1:968131692426:web:467ddbadc7ef1ac1d4ea73",
+                measurementId: "G-WQTBNGZXQS"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            firebase.analytics();
+        </script>
+
+        <script>
+            window.currentTeam = 0;
+            console.log("in")
+            document.addEventListener('DOMContentLoaded', function () {
+                const db = firebase.firestore();
+                window.teamCodes = {};
+                var teamCodesDoc = db.collection("teamCode").doc('codes');
+                teamCodesDoc.get().then(function (doc) {
+                    window.teamCodes = doc.data();
+                    console.log(window.teamCodes)
+                })
+
+                db.collection('scorecard').get().then(snap => {
+                    var size = snap.size // will return the collection size
+                    showTeams(size);
+                    console.log("size: ", size)
+                });
+
+                function showTeams(n) {
+                    var div = document.getElementById('teamSelection');
+                    for (let i = 0; i < n; i++) {
+                        var teamElement = document.createElement('div');
+                        teamElement.className = "btn btn-primary teamTabs";
+                        teamElement.innerHTML = i + 1;
+                        teamElement.addEventListener("click", function () { fetchData(i + 1); });
+                        div.appendChild(teamElement);
+                    }
+                }
+
+                var forms = document.getElementsByTagName('form');
+                for (let i = 1; i <= 3; i++) {
+                    var form = forms[i - 1];
+                    form.addEventListener('submit', function (e) {
+                        e.preventDefault();
+                        addPoints(i)
+                    })
+                }
+
+                function addPoints(qNo) {
+                    var empty = {};
+                    var points = document.getElementsByTagName('form')[qNo - 1].getElementsByTagName('input')[0].value
+                    empty[qNo] = parseInt(points);
+                    console.log("Empty : ", empty)
+                    db.collection("scorecard").doc(window.teamCodes[window.currentTeam - 1]).set(empty, { merge: true })
+                        .then(function () {
+
+                            console.log("Answer checked for Question", qNo, "with point", points);
+
+                            document.getElementsByTagName('form')[qNo - 1].getElementsByTagName('input')[1].classList.add('btn-success');
+
+                            setTimeout(function () {
+                                document.getElementsByTagName('form')[qNo - 1].getElementsByTagName('input')[1].classList.remove('btn-success');
+
+                            }, 3000);
+                        });
+
+                }
+
+
+                fetchData = (teamNo) => {
+                    document.getElementsByClassName("teamTabs")[teamNo - 1].classList.add("btn-warning")
+                    document.getElementById("checkingTeam").innerHTML = "Currently Checking Team: " + teamNo
+                    window.currentTeam = teamNo;
+                    console.log("Inside fetchData")
+                    console.log(teamNo);
+
+                    db.collection("registered").onSnapshot(function (querySnapshot) {
+                        querySnapshot.forEach(function (doc) {
+                            console.log("in registered", doc.id, doc.data())
+                            if (doc.id == window.teamCodes[teamNo - 1]) {
+                                console.log("Inside if", doc.id, window.teamCodes[teamNo]);
+                                var answers = doc.data()["answers"];
+                                addAnswers(answers);
+
+                            }
+                        })
+                    });
+                    db.collection("answers").doc("correctAnswers").get().then(function (doc) {
+                        console.log(doc.id, doc.data())
+                        var correctAnswers = doc.data();
+                        addCorrectAnswers(correctAnswers);
+                    });
+                    db.collection("answers").doc("marks").get().then(function (doc) {
+                        console.log(doc.id, doc.data())
+                        var points = doc.data();
+                        addTotalPoints(points);
+                    });
+
+
+                    function addAnswers(answers) {
+                        for (var i = 1; i <= 3; i++) {
+                            var id = 'a' + i.toString();
+                            var answerDiv = document.getElementById(id);
+                            if (!answers[i]) answers[i] = "Not answered";
+                            answerDiv.innerHTML = answers[i];
+                        }
+                    }
+
+                    function addCorrectAnswers(correctAnswers) {
+                        for (var i = 1; i <= 3; i++) {
+                            var id = 'c' + i.toString();
+                            var correctAnswerDiv = document.getElementById(id);
+                            correctAnswerDiv.innerHTML = correctAnswers[i];
+                        }
+                    }
+
+                    function addTotalPoints(points) {
+                        for (var i = 1; i <= 3; i++) {
+                            var id = 'm' + i.toString();
+                            var pointsDiv = document.getElementById(id);
+                            pointsDiv.innerHTML = points[i];
+                        }
+                    }
+
+
+                };
+            });
+
+        </script>
+</body>
+
+
+</html>
