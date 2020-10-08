@@ -4,6 +4,10 @@ import 'firebase/firestore'
 
 import ReactLoading from 'react-loading';
 
+
+// Problem, if we have again moved to 2nd question from 4th question
+// The answer will not be called as update works for all the values
+
 class Quiz extends PureComponent {
   constructor(props) {
     super(props)
@@ -56,8 +60,8 @@ class Quiz extends PureComponent {
       .doc(this.props.secretId)
       .onSnapshot(
         (snap) => {
-          console.log(snap.id);
-          console.log(snap.data());
+          // console.log(snap.id);
+          // console.log(snap.data());
 
           const round = this.state.round;
           const toUpdate = snap.data()['answers'][round]
@@ -75,9 +79,30 @@ class Quiz extends PureComponent {
       );
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const newRound = this.state.round;
+    // console.log("New Round", newRound);
+    // console.log(prevState.round);
+
+    if (newRound !== prevState.round) {
+      console.log("Round has been changed!");
+
+      // Currrently clearing the previous answer
+      this.setState({
+        currentAnswer: ''
+      });
+
+    }
+  }
+
   componentWillUnmount() {
     try {
       this.firebaseListener();
+    } catch (error) {
+      console.log("Ignore Error in predict");
+    }
+    try {
+      this.answerListener();
     } catch (error) {
       console.log("Ignore Error in predict");
     }
@@ -98,7 +123,7 @@ class Quiz extends PureComponent {
     const toUpdateDict = {};
     toUpdateDict[round] = currentAnswer;
 
-    console.log("Answer event called", round, currentAnswer);
+    // console.log("Answer event called", round, currentAnswer);
 
     // Update the answer here, the value will come back from the snapshot listener
     firebase.firestore()

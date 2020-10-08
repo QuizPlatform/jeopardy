@@ -11,14 +11,14 @@ class App extends PureComponent {
     super(props)
 
     this.state = {
-      secretId: 'alpha',
+      secretId: '',
       loginLoading: false,
       err: null
     }
   }
 
   loginSubmitHandler = (val) => {
-    console.log(val);
+    // console.log(val);
 
     this.setState({
       loginLoading: true
@@ -28,7 +28,7 @@ class App extends PureComponent {
       .doc(val).get().then(doc => {
         if (doc.exists) {
           // Yeah finally success
-          console.log("Successful", val);
+          // console.log("Successful", val);
           this.setState({
             secretId: val
           });
