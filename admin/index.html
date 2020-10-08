@@ -11,28 +11,23 @@
 </head>
 
 <body>
-  <div id="Hello world">
-    Hello world
+  <div id="change-status-div" style="margin-top:10px" class="col">
+    <h3>Change Round</h3>
+    <label for="questionNo">Enter Question No:</label><br>
+    <input type="number" id="questionNo" name="questionNo"><br>
+    <button type="button" id="round-submit" class="btn btn-info btn-sm" onclick="changeValue()"
+      style="margin-top:10px">Change Round</button>
+  </div>
+  <div id="current-round" style="padding:20px">
+
   </div>
 
 
-
-
-
-
-  <!-- Add all the scripts here -->
-
-  <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-firestore.js"></script>
-
-  <!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
   <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-analytics.js"></script>
 
   <script>
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     var firebaseConfig = {
       apiKey: "AIzaSyB1mz728tc9dqKGLUiPOAwxBxg20Gx4mSE",
       authDomain: "quizpriyam.firebaseapp.com",
@@ -43,7 +38,6 @@
       appId: "1:968131692426:web:467ddbadc7ef1ac1d4ea73",
       measurementId: "G-WQTBNGZXQS"
     };
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
   </script>
@@ -57,8 +51,32 @@
     crossorigin="anonymous"></script>
 
 
+  <script>
+    async function changeValue() {
+      // Firebase db initialisation
+      var db = firebase.firestore();
+      console.log('DB initialised');
 
+      var questionNo = document.getElementById("questionNo").value
+      console.log(questionNo);
+      db.collection("admin").doc("adminControls069").update({ "round": questionNo })
+    }
 
+    var db = firebase.firestore();
+    var roundDoc = db.collection("admin").doc("adminControls069");
+    roundDoc.onSnapshot(function (doc) {
+      document.getElementById("current-round").innerHTML = "Current Round is : " + doc.data()["round"];
+      //console.log(doc.data()["round"]);
+    });
+
+    var input = document.getElementById("questionNo");
+    input.addEventListener("keyup", function (event) {
+      if (event.keyCode === 13) {
+        event.preventDefault();
+        document.getElementById("round-submit").click();
+      }
+    });
+  </script>
 
 </body>
 
