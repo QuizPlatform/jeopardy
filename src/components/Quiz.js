@@ -16,7 +16,8 @@ class Quiz extends PureComponent {
       round: '',
       currentAnswer: '',
       roundLoading: true,
-      err: null
+      err: null,
+      oldAnswer: ''
     }
 
     this.firebaseListener = '';
@@ -68,7 +69,8 @@ class Quiz extends PureComponent {
 
           // Updating with the latest answer
           this.setState({
-            currentAnswer: toUpdate
+            currentAnswer: toUpdate,
+            oldAnswer: toUpdate
           });
         },
         (err) => {
@@ -89,7 +91,8 @@ class Quiz extends PureComponent {
 
       // Currrently clearing the previous answer
       this.setState({
-        currentAnswer: ''
+        currentAnswer: '',
+        oldAnswer: ''
       });
 
     }
@@ -119,19 +122,29 @@ class Quiz extends PureComponent {
     event.preventDefault();
 
     const currentAnswer = this.state.currentAnswer;
-    const round = this.state.round;
-    const toUpdateDict = {};
-    toUpdateDict[round] = currentAnswer;
 
-    // console.log("Answer event called", round, currentAnswer);
+    firebase.firestore().collection('admin')
+      .doc('adminControls069')
+      .get().then(doc => {
 
-    // Update the answer here, the value will come back from the snapshot listener
-    firebase.firestore()
-      .collection('registered')
-      .doc(this.props.secretId)
-      .set({
-        answers: toUpdateDict
-      }, { merge: true });
+        const toUpdateDict = {};
+        toUpdateDict[doc.data()['round']] = currentAnswer;
+
+        // console.log("Answer event called", round, currentAnswer);
+
+        // Update the answer here, the value will come back from the snapshot listener
+        firebase.firestore()
+          .collection('registered')
+          .doc(this.props.secretId)
+          .set({
+            answers: toUpdateDict
+          }, { merge: true }).then(val => {
+          });
+        ;
+
+      }).catch(err => {
+        alert('Update Failed');
+      });
   }
 
   render() {
@@ -173,6 +186,12 @@ class Quiz extends PureComponent {
                 <button type="submit" className="btn btn-success" style={{ width: "100%" }} >Submit</button>
               </div>
             </form>
+
+            <div>
+              <h3> Your current Answer is </h3>
+              <p>{this.state.oldAnswer}</p>
+              <p>You can always change your answer until this Question is Open!</p>
+            </div>
 
           </div>
         );
