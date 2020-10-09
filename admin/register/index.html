@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Register</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css"
+    integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX" crossorigin="anonymous">
+
+</head>
+
+<body>
+  <a style="padding:20px; margin:20px" href="/" class="btn btn-primary btn-sm">Home</a>
+  <a style="padding:20px; margin:20px" href="/backup" class="btn btn-primary btn-sm">Backup Page</a>
+  <a style="padding:20px; margin:20px" href="/register" class="btn btn-primary btn-sm">Registration Page</a>
+  <a style="padding:20px; margin:20px" href="/check-answers" class="btn btn-primary btn-sm">Check answers</a>
+  <a style="padding:20px; margin:20px" href="/scorecard" class="btn btn-primary btn-sm">Scorecard</a>
+  <br>
+
+  <!-- form for registration -->
+  <div class="registerationForm">
+    <h1 class="title">Register</h1>
+
+    <form id="registerform">
+
+      <label>Doc ID : </label>
+      <input id="docID" placeholder="1-40" value="1"><br>
+      <label>Team Code :</label>
+      <input id="teamCode"> <br>
+      <label>Team Leader :</label>
+      <input id="teamLeader"> <br>
+      <label>Team members : </label>
+      <input id="teamMember2" placeholder="team Member 2"><br>
+
+      <label>Team Name : </label>
+      <input id="teamName"><br>
+
+      <button type="submit" class="btn btn-info mb-1">Add</button>
+
+    </form>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-analytics.js"></script>
+
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyB1mz728tc9dqKGLUiPOAwxBxg20Gx4mSE",
+      authDomain: "quizpriyam.firebaseapp.com",
+      databaseURL: "https://quizpriyam.firebaseio.com",
+      projectId: "quizpriyam",
+      storageBucket: "quizpriyam.appspot.com",
+      messagingSenderId: "968131692426",
+      appId: "1:968131692426:web:467ddbadc7ef1ac1d4ea73",
+      measurementId: "G-WQTBNGZXQS"
+    };
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+  <!-- script for updating to firebase     -->
+
+  <script>
+
+    function randomCode() {
+      var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOP1234567890";
+      var pass = "";
+      for (var x = 0; x < 7; x++) {
+        var i = Math.floor(Math.random() * chars.length);
+        pass += chars.charAt(i);
+      }
+      return pass;
+    }
+
+    document.getElementById('registerform').onsubmit = function (e) {
+
+      e.preventDefault()
+
+      var ID = document.getElementById('docID').value.toString();
+      var teamCode = document.getElementById('teamCode').value;
+      var teamLeader = document.getElementById('teamLeader').value;
+      var two = document.getElementById('teamMember2').value;
+      var teamName = document.getElementById('teamName').value;
+
+      var team = {};
+      team['answers'] = {};
+      team['members'] = [teamLeader, two]
+      team['teamName'] = teamName
+
+      var data = {};
+      data[ID] = teamCode;
+      console.log(data);
+
+      const db = firebase.firestore();
+
+      db.collection('registered')
+        .doc(teamCode)
+        .set(team, { merge: true });
+
+      db.collection('scorecard')
+        .doc(teamCode)
+        .set({ "1": 0 }, { merge: true });
+
+      db.collection('teamCode')
+        .doc("codes")
+        .set(data, { merge: true })
+
+      document.getElementById('docID').value = parseInt(ID) + 1;
+      document.getElementById('teamLeader').value = ""
+      document.getElementById('teamMember2').value = ""
+      document.getElementById('teamName').value = ""
+    }
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <title>Backup</title>
+</head>
+
+<body>
+  <a style="padding:20px; margin:20px" href="/" class="btn btn-primary btn-sm">Home</a>
+  <a style="padding:20px; margin:20px" href="/backup" class="btn btn-primary btn-sm">Backup Page</a>
+  <a style="padding:20px; margin:20px" href="/register" class="btn btn-primary btn-sm">Registration Page</a>
+  <a style="padding:20px; margin:20px" href="/check-answers" class="btn btn-primary btn-sm">Check answers</a>
+  <a style="padding:20px; margin:20px" href="/scorecard" class="btn btn-primary btn-sm">Scorecard</a>
+  <br>
+  <button onclick="backup()">Backup</button>
+  <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-analytics.js"></script>
+
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyB1mz728tc9dqKGLUiPOAwxBxg20Gx4mSE",
+      authDomain: "quizpriyam.firebaseapp.com",
+      databaseURL: "https://quizpriyam.firebaseio.com",
+      projectId: "quizpriyam",
+      storageBucket: "quizpriyam.appspot.com",
+      messagingSenderId: "968131692426",
+      appId: "1:968131692426:web:467ddbadc7ef1ac1d4ea73",
+      measurementId: "G-WQTBNGZXQS"
+    };
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+  <script>
+
+    async function exportToJsonFile(jsonData) {
+      //console.log('json' , jsonData)
+      let dataStr = JSON.stringify(jsonData);
+      let dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+
+      let exportFileDefaultName = 'data.json';
+
+      let linkElement = document.createElement('a');
+      linkElement.setAttribute('href', dataUri);
+      linkElement.setAttribute('download', exportFileDefaultName);
+      linkElement.click();
+    }
+
+    async function takeBackup() {
+      const alldata = {}
+      var db = firebase.firestore()
+
+      alldata['registered'] = {}
+      alldata['scorecard'] = {}
+
+
+      db.collection("registered").get().then(snap => {
+        snap.forEach(doc => {
+          alldata["registered"][doc.id] = doc.data()
+        })
+      });
+
+      db.collection("scorecard").get().then(snap => {
+        snap.forEach(doc => {
+          alldata["scorecard"][doc.id] = doc.data()
+        })
+      });
+
+      console.log(alldata)
+      return alldata
+    }
+
+    async function backup() {
+      takeBackup().then(alldata => {
+        //console.log("backup" , alldata)
+        //exportToJsonFile(alldata)
+        setTimeout(function () {
+          exportToJsonFile(alldata)
+        }, 5000)
+
+      });
+
+    }
+  </script>
+</body>
+
+</html>

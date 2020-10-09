@@ -11,17 +11,35 @@
 </head>
 
 <body>
-  <div id="change-status-div" style="margin-top:10px" class="col">
-    <h3>Change Round</h3>
-    <label for="questionNo">Enter Question No:</label><br>
-    <input type="number" id="questionNo" name="questionNo"><br>
-    <button type="button" id="round-submit" class="btn btn-info btn-sm" onclick="changeValue()"
-      style="margin-top:10px">Change Round</button>
-  </div>
-  <div id="current-round" style="padding:20px">
+
+  <a style="padding:20px; margin:20px" href="/" class="btn btn-primary btn-sm">Home</a>
+  <a style="padding:20px; margin:20px" href="/backup" class="btn btn-primary btn-sm">Backup Page</a>
+  <a style="padding:20px; margin:20px" href="/register" class="btn btn-primary btn-sm">Registration Page</a>
+  <a style="padding:20px; margin:20px" href="/check-answers" class="btn btn-primary btn-sm">Check answers</a>
+  <a style="padding:20px; margin:20px" href="/scorecard" class="btn btn-primary btn-sm">Scorecard</a>
+  <br>
+
+  <div class="row" style="height:30vh">
+    <div id="change-round-main" style="padding:20px ; margin:20px; border:outset; border-radius:10px" class="col-4">
+      <div id="change-status-div" style="margin-top:10px" class="col">
+        <h3>Change Round</h3>
+        <label for="questionNo">Enter Question No:</label><br>
+        <input type="number" id="questionNo" name="questionNo"><br>
+        <button type="button" id="round-submit" class="btn btn-info btn-sm" onclick="changeValue()"
+          style="margin-top:10px">Change Round</button>
+      </div>
+      <div id="current-round" style="padding:20px">
+      </div>
+    </div>
 
   </div>
+  <!--end of row-->
 
+  <div class="row">
+    <div id="registration" class="col-12">
+
+    </div>
+  </div>
 
   <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.22.0/firebase-firestore.js"></script>
