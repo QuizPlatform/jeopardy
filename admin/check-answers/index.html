@@ -100,19 +100,19 @@
 
 
                 for (let i = 1; i < num_of_ques; i++) {
-                    document.getElementById("tabs").innerHTML += `           <div class="tab">
-                <label class="tab-label" for="chck`+ i + `">Question ` + i + `</label>
+                    document.getElementById("tabs").innerHTML += `           <div class="tab" style="border:2px solid black; padding:10px">
+                <label class="tab-label" for="chck`+ i + `"><b><i>Question ` + i + `</i></b></label>
                 <div class="row tab-content">
                     <div class="col-10">
-                        <h6>Users Answer:</h6>
+                        <h6><i>Users Answer:</i></h6>
                         <div id="a`+ i + `" class="usersAnswer">
                             Babu
                         </div>
-                        <h6>Correct Answer:</h6>
+                        <h6><i>Correct Answer:</i></h6>
                         <div id="c`+ i + `" class="correctAnswer">
                             Pranshu
                         </div>
-                        <h6>Total Marks:</h6>
+                        <h6><i>Total Marks:</i></h6>
                         <div id="m`+ i + `" class="points">
                             0
                         </div>
