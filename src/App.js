@@ -2,16 +2,19 @@ import React, { PureComponent } from 'react'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
-import LoginHandler from './components/LoginHandler'
 import ReactLoading from 'react-loading';
-import Quiz from './components/Quiz';
+import Quiz2 from './components/Quiz2';
+
+import LoginHandler2 from './components/des';
+import { Grid } from '@material-ui/core';
+import './App.css'
 
 class App extends PureComponent {
   constructor(props) {
     super(props)
 
     this.state = {
-      secretId: '',
+      secretId: 'alpha',
       loginLoading: false,
       err: null
     }
@@ -43,6 +46,18 @@ class App extends PureComponent {
   }
 
   render() {
+
+    let credits = (
+      <Grid container spacing={2} style={{ marginTop: "auto" }} >
+        <Grid item xs={6} md={6}>
+
+        </Grid>
+        <Grid item xs={6} md={6} style={{ textAlign: "center" }}>
+          Created by Dehla Pakad Team
+        </Grid>
+      </Grid>
+    );
+
     if (this.state.loginLoading) {
       //Currenlty the round is loading
       return (
@@ -59,15 +74,17 @@ class App extends PureComponent {
       if (secretId) {
         return (
           <div id="main" key={0}>
-            <Quiz secretId={secretId} />
+            <Quiz2 secretId={secretId} />
+            {credits}
           </div>
         )
       } else {
         return (
           <div id="main" key={0}>
             <div id="main-login-container" style={{ marginTop: "48px" }}>
-              <LoginHandler submitHandler={this.loginSubmitHandler} />
+              <LoginHandler2 submitHandler={this.loginSubmitHandler} />
             </div>
+            {credits}
           </div>
         )
       }

@@ -1,0 +1,14 @@
+#main {
+  padding: 12px;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  flex-flow: column;
+}
+
+@media (min-width : 920px) {
+  #answer-container {
+    margin-right: 20%;
+    margin-left: 10%;
+  }
+}
