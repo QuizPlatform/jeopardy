@@ -81,7 +81,9 @@ class App extends PureComponent {
           <a target="_none" href="https://dehla.herokuapp.com">Dehla Pakad </a>
           Team
         </Grid>
-      </Grid>,
+      </Grid>);
+
+    let dialog = (
 
       <Dialog
         open={this.state.failDialog}
@@ -123,6 +125,7 @@ class App extends PureComponent {
           <div id="main" key={0}>
             <Quiz2 secretId={secretId} />
             {credits}
+            {dialog}
           </div>
         )
       } else {
@@ -132,6 +135,7 @@ class App extends PureComponent {
               <LoginHandler2 submitHandler={this.loginSubmitHandler} />
             </div>
             {credits}
+            {dialog}
           </div>
         )
       }
