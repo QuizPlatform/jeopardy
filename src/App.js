@@ -6,8 +6,12 @@ import ReactLoading from 'react-loading';
 import Quiz2 from './components/Quiz2';
 
 import LoginHandler2 from './components/des';
-import { Grid } from '@material-ui/core';
+import { Grid, Slide, Dialog, DialogActions, DialogTitle, DialogContent, Button, DialogContentText } from '@material-ui/core';
 import './App.css'
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="down" ref={ref} {...props} />;
+});
 
 class App extends PureComponent {
   constructor(props) {
@@ -16,7 +20,9 @@ class App extends PureComponent {
     this.state = {
       secretId: '',
       loginLoading: false,
-      err: null
+      err: null,
+      failDialog: false,
+      failMsg: "Login Failed!"
     }
   }
 
@@ -36,14 +42,32 @@ class App extends PureComponent {
             secretId: val
           });
         } else {
-          alert('Incorrect Password');
+          this.setState({
+            failDialog: true,
+            failMsg: 'Login Failed'
+          });
         }
       }).catch(err => {
-        alert('Something Went Wrong');
+        this.setState({
+          failDialog: true,
+          failMsg: 'Something went Wrong!'
+        });
       }).finally(() => {
         this.setState({ loginLoading: false });
       });
   }
+
+  handleClickOpen = () => {
+    this.setState({
+      failDialog: true,
+    });
+  };
+
+  handleClose = () => {
+    this.setState({
+      failDialog: false,
+    });
+  };
 
   render() {
 
@@ -57,7 +81,28 @@ class App extends PureComponent {
           <a target="_none" href="https://dehla.herokuapp.com">Dehla Pakad </a>
           Team
         </Grid>
-      </Grid>
+      </Grid>,
+
+      <Dialog
+        open={this.state.failDialog}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={this.handleClose}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">{this.state.failMsg}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Check your secret Id and try again!
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={this.handleClose} color="primary">
+            Okay
+          </Button>
+        </DialogActions>
+      </Dialog>
     );
 
     if (this.state.loginLoading) {
