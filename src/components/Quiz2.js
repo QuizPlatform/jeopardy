@@ -165,7 +165,7 @@ class Quiz2 extends PureComponent {
       // Waiting for next round
       if (round === '0') {
         return (
-          <h2>Next Round is Going to be Started soon!</h2>
+          <h2 style={{ textAlign: "center", marginTop: "32px" }}>Next Round is Going to be Started soon!</h2>
         );
       }
       else {

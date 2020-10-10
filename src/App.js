@@ -14,7 +14,7 @@ class App extends PureComponent {
     super(props)
 
     this.state = {
-      secretId: 'alpha',
+      secretId: '',
       loginLoading: false,
       err: null
     }
@@ -49,11 +49,13 @@ class App extends PureComponent {
 
     let credits = (
       <Grid container spacing={2} style={{ marginTop: "auto" }} >
-        <Grid item xs={6} md={6}>
-
+        <Grid item md={6} style={{ textAlign: "center" }}>
+          <a target="_none" href="https://pnotes.web.app">Click Here for Rules</a>
         </Grid>
-        <Grid item xs={6} md={6} style={{ textAlign: "center" }}>
-          Created by Dehla Pakad Team
+        <Grid item md={6} style={{ textAlign: "center" }}>
+          © CheckM8 - Maintained by {` `}
+          <a target="_none" href="https://dehla.herokuapp.com">Dehla Pakad </a>
+          Team
         </Grid>
       </Grid>
     );
