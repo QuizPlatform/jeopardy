@@ -188,7 +188,7 @@ class Quiz2 extends PureComponent {
                         value={this.state.currentAnswer}
                         className="form-control"
                         multiline
-                        placeholder="Enter your secret ID"
+                        placeholder="Enter Your Answer Here"
                         variant={"outlined"}
                         label="Write Answer"
                         required

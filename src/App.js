@@ -74,7 +74,7 @@ class App extends PureComponent {
     let credits = (
       <Grid container spacing={2} style={{ marginTop: "auto" }} >
         <Grid item md={6} style={{ textAlign: "center" }}>
-          <a target="_none" href="https://pnotes.web.app">Click Here for Rules</a>
+          <a target="_none" href="https://pnotes.web.app/share?id=-MJQYVRn2Z0xumvy22Ee&user=sethpriyam1">Click Here for Rules</a>
         </Grid>
         <Grid item md={6} style={{ textAlign: "center" }}>
           © CheckM8 - Maintained by {` `}
