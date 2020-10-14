@@ -2,9 +2,16 @@ import React, { PureComponent } from 'react'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
-import LoginHandler from './components/LoginHandler'
 import ReactLoading from 'react-loading';
-import Quiz from './components/Quiz';
+import Quiz2 from './components/Quiz2';
+
+import LoginHandler2 from './components/des';
+import { Grid, Slide, Dialog, DialogActions, DialogTitle, DialogContent, Button, DialogContentText } from '@material-ui/core';
+import './App.css'
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="down" ref={ref} {...props} />;
+});
 
 class App extends PureComponent {
   constructor(props) {
@@ -13,7 +20,9 @@ class App extends PureComponent {
     this.state = {
       secretId: '',
       loginLoading: false,
-      err: null
+      err: null,
+      failDialog: false,
+      failMsg: "Login Failed!"
     }
   }
 
@@ -33,16 +42,71 @@ class App extends PureComponent {
             secretId: val
           });
         } else {
-          alert('Incorrect Password');
+          this.setState({
+            failDialog: true,
+            failMsg: 'Login Failed'
+          });
         }
       }).catch(err => {
-        alert('Something Went Wrong');
+        this.setState({
+          failDialog: true,
+          failMsg: 'Something went Wrong!'
+        });
       }).finally(() => {
         this.setState({ loginLoading: false });
       });
   }
 
+  handleClickOpen = () => {
+    this.setState({
+      failDialog: true,
+    });
+  };
+
+  handleClose = () => {
+    this.setState({
+      failDialog: false,
+    });
+  };
+
   render() {
+
+    let credits = (
+      <Grid container spacing={2} style={{ marginTop: "auto" }} >
+        <Grid item md={6} style={{ textAlign: "center" }}>
+          <a target="_none" href="https://pnotes.web.app/share?id=-MJQYVRn2Z0xumvy22Ee&user=sethpriyam1">Click Here for Rules</a>
+        </Grid>
+        <Grid item md={6} style={{ textAlign: "center" }}>
+          © CheckM8 - Maintained by {` `}
+          <a target="_none" href="https://dehla.herokuapp.com">Dehla Pakad </a>
+          Team
+        </Grid>
+      </Grid>);
+
+    let dialog = (
+
+      <Dialog
+        open={this.state.failDialog}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={this.handleClose}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">{this.state.failMsg}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Check your secret Id and try again!
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={this.handleClose} color="primary">
+            Okay
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+
     if (this.state.loginLoading) {
       //Currenlty the round is loading
       return (
@@ -59,15 +123,19 @@ class App extends PureComponent {
       if (secretId) {
         return (
           <div id="main" key={0}>
-            <Quiz secretId={secretId} />
+            <Quiz2 secretId={secretId} />
+            {credits}
+            {dialog}
           </div>
         )
       } else {
         return (
           <div id="main" key={0}>
             <div id="main-login-container" style={{ marginTop: "48px" }}>
-              <LoginHandler submitHandler={this.loginSubmitHandler} />
+              <LoginHandler2 submitHandler={this.loginSubmitHandler} />
             </div>
+            {credits}
+            {dialog}
           </div>
         )
       }
